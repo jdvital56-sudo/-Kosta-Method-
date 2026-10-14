@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "Kosta Method",
+    "slug": "kosta-method",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "kostamethod",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#0F0F1A",
+    "splash": {
+      "backgroundColor": "#0F0F1A",
+      "resizeMode": "contain"
+    },
+    "assetBundlePatterns": ["assets/**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.kostamethod.app"
+    },
+    "android": {
+      "package": "com.kostamethod.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#0F0F1A"
+      }
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": ["expo-font"]
+  }
+}
