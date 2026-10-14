@@ -19,7 +19,8 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
+          cache-dependency-path: package.json
+      - run: npm install --no-audit --no-fund
       - run: npm run typecheck
 
   backend:
@@ -35,6 +36,6 @@ jobs:
           node-version: 22
           cache: npm
           cache-dependency-path: backend/package.json
-      - run: npm install
+      - run: npm install --no-audit --no-fund
       - run: npm run typecheck
       - run: npm run build
