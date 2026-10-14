@@ -1,0 +1,21 @@
+# Зависимости
+node_modules/
+
+# Сборка
+dist/
+build/
+.expo/
+*.log
+npm-debug.log*
+
+# Окружение и секреты — никогда не коммитить
+.env
+.env.*
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+
+# ОС
+.DS_Store
+Thumbs.db
