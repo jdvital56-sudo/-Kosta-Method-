@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Badge } from '@/components/Badge';
@@ -10,28 +10,66 @@ import { colors, spacing, typography } from '@/theme';
 import { MainTabScreenProps } from '@/navigation/types';
 import { useUserStore } from '@/store/useUserStore';
 import { useWorkoutStore } from '@/store/useWorkoutStore';
-import { PROGRAM_LENGTH_DAYS } from '@/constants/program';
 
 export function HomeScreen({ navigation }: MainTabScreenProps<'Home'>) {
   const profile = useUserStore((s) => s.profile);
-  const { plan, currentDay, initPlan, getCurrentWorkout, markDayCompleted, nextDay } =
-    useWorkoutStore();
+  const {
+    activeProgramId,
+    plan,
+    currentDay,
+    getActiveProgram,
+    getCurrentWorkout,
+    markDayCompleted,
+    nextDay,
+  } = useWorkoutStore();
 
-  useEffect(() => {
-    if (plan.length === 0) {
-      initPlan(profile?.startDate ?? new Date().toISOString().slice(0, 10));
-    }
-  }, [plan.length, initPlan, profile?.startDate]);
+  const program = getActiveProgram();
 
   const todayPlan = useMemo(() => plan.find((d) => d.day === currentDay) ?? null, [plan, currentDay]);
   const workout = getCurrentWorkout();
+
+  // Состояние «программа не выбрана»
+  if (!activeProgramId || plan.length === 0 || !program) {
+    return (
+      <ScreenContainer>
+        <View style={styles.header}>
+          <View>
+            <Text style={styles.greeting}>Привет, {profile?.name ?? 'спортсменка'} 👋</Text>
+            <Text style={styles.sub}>Давай выберем твою программу</Text>
+          </View>
+          <Badge label={`🔥 ${profile?.streakDays ?? 0} дней`} color={colors.warning} />
+        </View>
+
+        <Card style={styles.hero}>
+          <Text style={styles.heroLabel}>С чего начнём?</Text>
+          <Text style={styles.heroTitle}>Выбери программу тренировок</Text>
+          <Text style={styles.heroText}>
+            8 программ под разные цели: похудение, пресс, ягодицы, осанка, привычка. Костя поможет
+            с выбором — и подстроит нагрузку под тебя.
+          </Text>
+          <Button
+            title="Открыть каталог программ"
+            onPress={() => navigation.navigate('Programs')}
+            style={styles.heroButton}
+          />
+          <Button
+            title="Спросить Костю"
+            variant="ghost"
+            onPress={() => navigation.navigate('Kosta')}
+          />
+        </Card>
+      </ScreenContainer>
+    );
+  }
 
   return (
     <ScreenContainer>
       <View style={styles.header}>
         <View>
           <Text style={styles.greeting}>Привет, {profile?.name ?? 'спортсменка'} 👋</Text>
-          <Text style={styles.sub}>День {currentDay} из {PROGRAM_LENGTH_DAYS}</Text>
+          <Text style={styles.sub}>
+            {program.title} · день {currentDay} из {program.durationDays}
+          </Text>
         </View>
         <Badge label={`🔥 ${profile?.streakDays ?? 0} дней`} color={colors.warning} />
       </View>
@@ -73,9 +111,10 @@ export function HomeScreen({ navigation }: MainTabScreenProps<'Home'>) {
 
       <Card>
         <Text style={styles.sectionTitle}>Прогресс программы</Text>
-        <ProgressBar value={currentDay / PROGRAM_LENGTH_DAYS} />
+        <ProgressBar value={currentDay / program.durationDays} />
         <Text style={styles.sectionHint}>
-          Дней пройдено: {Math.max(0, currentDay - 1)} · осталось {PROGRAM_LENGTH_DAYS - currentDay + 1}
+          Дней пройдено: {Math.max(0, currentDay - 1)} · осталось{' '}
+          {program.durationDays - currentDay + 1}
         </Text>
       </Card>
 
@@ -95,6 +134,12 @@ export function HomeScreen({ navigation }: MainTabScreenProps<'Home'>) {
             style={styles.quickButton}
           />
         </View>
+        <Button
+          title="Сменить программу"
+          variant="ghost"
+          onPress={() => navigation.navigate('Programs')}
+          style={styles.fullButton}
+        />
       </Card>
     </ScreenContainer>
   );
@@ -136,4 +181,5 @@ const styles = StyleSheet.create({
   sectionHint: { ...typography.bodySmall, color: colors.textMuted, marginTop: spacing.sm },
   quickRow: { flexDirection: 'row', gap: spacing.sm },
   quickButton: { flex: 1 },
+  fullButton: { marginTop: spacing.sm },
 });

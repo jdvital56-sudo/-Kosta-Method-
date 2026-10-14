@@ -15,6 +15,7 @@ export type RootStackParamList = {
   Main: NavigatorScreenParams<MainTabParamList>;
   Paywall: { source?: 'onboarding' | 'home' | 'profile' } | undefined;
   WorkoutPlayer: { day: number };
+  Programs: undefined;
 };
 
 export type RootScreenProps<T extends keyof RootStackParamList> = NativeStackScreenProps<

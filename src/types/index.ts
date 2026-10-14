@@ -79,3 +79,19 @@ export interface CoachMessage {
 }
 
 export type SubscriptionPlan = 'free' | 'monthly' | 'yearly' | 'lifetime';
+
+/** Программа тренировок — самостоятельный курс, который выбирает пользователь. */
+export interface TrainingProgram {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  durationDays: number;
+  level: FitnessLevel;
+  focus: BodyZone[];
+  coverEmoji: string;
+  kcalRange: [number, number];
+  workoutMinutes: number;
+  templateIds: string[];
+  workDaysPerCycle: number;
+}

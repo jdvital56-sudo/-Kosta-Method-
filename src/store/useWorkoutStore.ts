@@ -2,23 +2,32 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { DayPlan, Workout } from '@/types';
-import { buildThirtyDayPlan, workoutForDay, PROGRAM_LENGTH_DAYS } from '@/constants/program';
+import { DayPlan, TrainingProgram, Workout } from '@/types';
+import {
+  buildProgramPlan,
+  getProgram,
+  workoutForDay,
+  TRAINING_PROGRAMS,
+} from '@/constants/programs';
 
 interface WorkoutState {
+  /** Активная программа (null — пользователь ещё не выбрал) */
+  activeProgramId: string | null;
   plan: DayPlan[];
   currentDay: number;
   completedIds: string[];
-  /** Инициализировать план от даты старта (идемпотентно) */
-  initPlan: (startDateISO: string) => void;
+  /** Выбрать программу и построить план */
+  setActiveProgram: (programId: string, startDateISO: string) => void;
+  getActiveProgram: () => TrainingProgram | null;
   getCurrentWorkout: () => Workout | null;
   markDayCompleted: (day: number) => void;
   nextDay: () => void;
+  resetPlan: () => void;
 }
 
-function buildPlan(startDateISO: string): DayPlan[] {
+function buildPlan(program: TrainingProgram, startDateISO: string): DayPlan[] {
   const start = new Date(startDateISO);
-  return buildThirtyDayPlan(start).map((entry) => {
+  return buildProgramPlan(program).map((entry) => {
     const date = new Date(start);
     date.setDate(start.getDate() + entry.day - 1);
     return {
@@ -34,12 +43,23 @@ function buildPlan(startDateISO: string): DayPlan[] {
 export const useWorkoutStore = create<WorkoutState>()(
   persist(
     (set, get) => ({
+      activeProgramId: null,
       plan: [],
       currentDay: 1,
       completedIds: [],
-      initPlan: (startDateISO) => {
-        if (get().plan.length === PROGRAM_LENGTH_DAYS) return;
-        set({ plan: buildPlan(startDateISO), currentDay: 1 });
+      setActiveProgram: (programId, startDateISO) => {
+        const program = getProgram(programId);
+        if (!program) return;
+        set({
+          activeProgramId: programId,
+          plan: buildPlan(program, startDateISO),
+          currentDay: 1,
+          completedIds: [],
+        });
+      },
+      getActiveProgram: () => {
+        const id = get().activeProgramId;
+        return id ? getProgram(id) ?? null : TRAINING_PROGRAMS[0] ?? null;
       },
       getCurrentWorkout: () => {
         const { plan, currentDay } = get();
@@ -57,9 +77,13 @@ export const useWorkoutStore = create<WorkoutState>()(
           };
         }),
       nextDay: () =>
-        set((state) => ({
-          currentDay: Math.min(PROGRAM_LENGTH_DAYS, state.currentDay + 1),
-        })),
+        set((state) => {
+          const program = state.activeProgramId ? getProgram(state.activeProgramId) : null;
+          const maxDay = program?.durationDays ?? 30;
+          return { currentDay: Math.min(maxDay, state.currentDay + 1) };
+        }),
+      resetPlan: () =>
+        set({ activeProgramId: null, plan: [], currentDay: 1, completedIds: [] }),
     }),
     {
       name: 'kosta-workouts',

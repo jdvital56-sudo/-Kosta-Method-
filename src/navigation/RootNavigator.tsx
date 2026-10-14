@@ -6,6 +6,7 @@ import { RootStackParamList } from '@/navigation/types';
 import { MainTabs } from '@/navigation/MainTabs';
 import { OnboardingScreen } from '@/screens/OnboardingScreen';
 import { PaywallScreen } from '@/screens/PaywallScreen';
+import { ProgramsScreen } from '@/screens/ProgramsScreen';
 import { WorkoutPlayerScreen } from '@/screens/WorkoutPlayerScreen';
 import { useUserStore } from '@/store/useUserStore';
 
@@ -32,6 +33,11 @@ export function RootNavigator() {
         name="Paywall"
         component={PaywallScreen}
         options={{ presentation: 'modal', title: 'Полный доступ' }}
+      />
+      <Stack.Screen
+        name="Programs"
+        component={ProgramsScreen}
+        options={{ title: 'Программы' }}
       />
       <Stack.Screen
         name="WorkoutPlayer"

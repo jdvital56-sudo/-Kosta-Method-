@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { IsISO8601, IsNumber, IsString, Min } from 'class-validator';
 import { Request } from 'express';
@@ -31,9 +31,14 @@ interface AuthenticatedRequest extends Request {
 export class WorkoutsController {
   constructor(private readonly workouts: WorkoutsService) {}
 
+  @Get('programs')
+  getPrograms() {
+    return this.workouts.getPrograms();
+  }
+
   @Get('program')
-  getProgram() {
-    return this.workouts.getProgram();
+  getProgram(@Query('programId') programId?: string) {
+    return this.workouts.getProgram(programId);
   }
 
   @Get('completions')

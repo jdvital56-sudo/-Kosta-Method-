@@ -6,19 +6,19 @@
 ## Выполнено
 - [x] step-00: инициализация проекта
 - [x] step-01: инициализация PROGRESS.md, CHANGELOG.md, README.md
-- [x] step-02: каркас Expo-приложения (TypeScript, конфиги), дизайн-система, доменные типы, генератор 30-дневной программы
+- [x] step-02: каркас Expo-приложения (TypeScript, конфиги), дизайн-система, доменные типы, генератор программы тренировок
 - [x] step-03: Zustand-сторы (user, workout, progress, subscription) и API-сервисы (api, auth, workouts, aiCoach)
 - [x] step-04: навигация (RootStack + BottomTabs), 7 экранов, базовые UI-компоненты
 - [x] step-05: backend NestJS — модули auth, users, workouts, ai, progress, payments + Swagger
 - [x] step-06: docs/api-contract.md, CI-workflow (typecheck frontend + build backend)
+- [x] step-07: каталог из **8 программ тренировок** (14/21/30/45 дней), экран выбора программы, выбор программы в Home, `/workouts/programs` на backend
 
 ## Блокеры
-- **Push в GitHub**: требуется добавить новый deploy key (публичная часть передана пользователю в чате), см. sessions/2026-10-15.md
+нет (deploy key добавлен, push работает)
 
 ## Следующий шаг
-- step-07: экраны онбординга-профиля (замеры, фото), интеграция RevenueCat (клиент)
-- step-08: JwtAuthGuard + PostgreSQL-слой на backend, хеширование паролей
-- step-09: интеграция OpenAI-чата Кости с контекстом плана
+- step-08: экраны замеров и фото-прогресса, интеграция RevenueCat (клиент)
+- step-09: JwtAuthGuard + PostgreSQL-слой на backend, хеширование паролей
 - step-10: тесты (jest) + EAS-сборка
 
 ## История коммитов
@@ -30,3 +30,4 @@
 | 2026-10-15 | step-04 | навигация, компоненты, экраны |
 | 2026-10-15 | step-05 | backend NestJS: auth/users/workouts/ai/progress/payments |
 | 2026-10-15 | step-06 | API-контракт, CI, обновление документации |
+| 2026-10-15 | step-07 | каталог 8 программ тренировок, экран выбора, /workouts/programs |

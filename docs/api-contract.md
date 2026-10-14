@@ -20,7 +20,8 @@ Auth: `Authorization: Bearer <JWT>` (выдаётся через `/auth/*`)
 
 | Method | Path | Body / Params | Response |
 |--------|------|---------------|----------|
-| GET | `/workouts/program` | — | `DayPlan[]` (30 дней) |
+| GET | `/workouts/programs` | — | каталог программ тренировок (8 курсов) |
+| GET | `/workouts/program?programId=` | `programId` (опц., по умолчанию флагманская) | `DayPlan[]` план программы |
 | GET | `/workouts/:id` | — | `Workout` с упражнениями |
 | GET | `/workouts/completions` | — | список завершённых тренировок |
 | POST | `/workouts/completions` | `{ workoutId, durationMin, kcal, completedAt }` | `{ ok: true }` |

@@ -13,6 +13,10 @@
 - UI-компоненты: `Button`, `Card`, `ProgressBar`, `Badge`, `ScreenContainer`
 - Экраны: `OnboardingScreen`, `HomeScreen`, `WorkoutPlayerScreen` (таймер интервалов), `KostaScreen` (чат-тренер), `BodyMapScreen` (карта тела), `ProfileScreen`, `PaywallScreen`
 - Backend (NestJS): модули `auth`, `users`, `workouts`, `ai`, `progress`, `payments`, Swagger на `/api/docs`
+- **Каталог программ тренировок (8 курсов)**: `Похудение дома · 30 дней`, `Плоский живот · 21 день`, `Ноги и ягодицы · 30 дней`, `HIIT-сжигание · 14 дней`, `Спина и осанка · 21 день`, `Грудь и руки · 30 дней`, `Привычка тренироваться · 45 дней`, `Танцевальное похудение · 30 дней` — с разной длительностью, уровнем и фокусом зон
+- Экран `ProgramsScreen` — каталог программ с карточками, статистикой и выбором активной программы
+- Поддержка смены программы: план строится под выбранную программу (`buildProgramPlan`), прогресс сбрасывается корректно
+- Backend: `GET /workouts/programs` (каталог), `GET /workouts/program?programId=` (план программы), `backend/src/workouts/programs.catalog.ts`
 - `docs/api-contract.md` — контракт REST API v1
 - CI-workflow: typecheck фронтенда + сборка backend
 - `.gitignore`
