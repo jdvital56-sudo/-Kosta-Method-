@@ -1,12 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 
 import { colors, radius, spacing, typography } from '@/theme';
 
 interface BadgeProps {
   label: string;
   color?: string;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 }
 
 export function Badge({ label, color = colors.accent, style }: BadgeProps) {
